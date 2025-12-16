@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>حاسبة نقاط المفاضلة - برنامج فرص</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="container">
+    <div class="header">
+      <div>
+        <h1>حاسبة نقاط المفاضلة</h1>
+        <p class="subtitle">برنامج «فرص» — حساب تقديري لنقاط المفاضلة (صفحة واحدة).</p>
+      </div>
+      <button id="resetBtn" class="btn secondary" type="button" title="مسح جميع الحقول">إعادة ضبط</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>نوع المتقدم</h2>
+      <div class="grid two">
+        <label class="field">
+          <span class="label">الفئة</span>
+          <select id="category">
+            <option value="teacher" selected>معلم / معلمة</option>
+            <option value="formations">تشكيلات إشرافية / مدرسية</option>
+          </select>
+        </label>
+
+        <label class="field" id="experienceField" style="display:none;">
+          <span class="label">الخبرة في نفس مجال الفرصة (بالسنوات)</span>
+          <input id="experienceYears" type="number" min="0" step="1" value="0" />
+          <span class="hint">يُحتسب بحد أعلى 13 نقطة.</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>الرخصة المهنية</h2>
+      <div class="grid two">
+        <label class="field">
+          <span class="label">درجة اختبار التخصص (من 100)</span>
+          <input id="specScore" type="number" min="0" max="100" step="0.01" value="0" />
+          <span class="hint">يُحتسب حتى 35 نقطة.</span>
+        </label>
+
+        <label class="field">
+          <span class="label">درجة الاختبار التربوي العام (من 100)</span>
+          <input id="pedScore" type="number" min="0" max="100" step="0.01" value="0" />
+          <span class="hint">يُحتسب حتى 25 نقطة.</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>الأداء والغياب</h2>
+      <div class="grid two">
+        <label class="field">
+          <span class="label">متوسط تقييم الأداء الوظيفي لآخر عامين (من 5)</span>
+          <input id="perfAvg" type="number" min="0" max="5" step="0.01" value="0" />
+          <span class="hint">يُحوّل إلى 30 نقطة.</span>
+        </label>
+
+        <label class="field">
+          <span class="label">أيام الغياب بدون عذر خلال العام السابق</span>
+          <input id="absenceDays" type="number" min="0" step="1" value="0" />
+          <span class="hint">يُخصم 1 نقطة لكل يوم (حد أعلى 14 نقطة للانضباط).</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>التطوير المهني والتطوع</h2>
+      <div class="grid two">
+        <label class="field">
+          <span class="label">نقاط/ساعات التطوير المهني</span>
+          <input id="pdPoints" type="number" min="0" step="0.01" value="0" />
+          <span class="hint">كل 1 نقطة = 1 ساعة — بحد أعلى 25 نقطة.</span>
+        </label>
+
+        <label class="field">
+          <span class="label">ساعات التطوع خلال العام السابق</span>
+          <input id="volHours" type="number" min="0" step="0.01" value="0" />
+          <span class="hint">1 نقطة لكل ساعة — بحد أعلى 20 نقطة.</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>الرتبة والخدمة وسنة التقديم</h2>
+      <div class="grid three">
+        <label class="field">
+          <span class="label">رتبة الوظيفة التعليمية</span>
+          <select id="rank">
+            <option value="2">معلم / مساعد معلم (2)</option>
+            <option value="4" selected>ممارس (4)</option>
+            <option value="6">متقدم (6)</option>
+            <option value="8">خبير (8)</option>
+          </select>
+          <span class="hint">تُحتسب حسب الرتبة (حتى 8 نقاط).</span>
+        </label>
+
+        <label class="field">
+          <span class="label">سنوات الخدمة الوظيفية</span>
+          <input id="serviceYears" type="number" min="0" step="1" value="0" />
+          <span class="hint" id="serviceHint">نقطة لكل سنة — بحد أعلى 25 نقطة (للمعلمين).</span>
+        </label>
+
+        <label class="field">
+          <span class="label">سنة التقديم (عدد النقاط)</span>
+          <input id="applyYearPoints" type="number" min="0" step="1" value="0" />
+          <span class="hint">نقطة لكل سنة قبل 1443هـ — بحد أعلى 13 نقطة.</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="card results">
+      <div class="resultsHeader">
+        <h2>النتيجة</h2>
+        <div class="totalBox">
+          <span class="totalLabel">المجموع الكلي</span>
+          <span id="totalScore" class="totalScore">0.00</span>
+        </div>
+      </div>
+
+      <details open>
+        <summary>تفصيل النقاط</summary>
+        <div class="tableWrap">
+          <table class="table" aria-label="تفصيل النقاط">
+            <thead>
+              <tr>
+                <th>البند</th>
+                <th>النقاط</th>
+                <th>الحد الأعلى</th>
+              </tr>
+            </thead>
+            <tbody id="breakdownBody"></tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary>كسر التعادل (للاطلاع)</summary>
+        <div class="note">
+          عند تساوي نقاط المفاضلة بين المتقدمين تُطبّق الأولوية بالترتيب:
+          <ol>
+            <li>اختبار التخصص للرخصة المهنية</li>
+            <li>الاختبار التربوي العام للرخصة المهنية</li>
+            <li>متوسط تقييم الأداء الوظيفي</li>
+            <li>الغياب بدون عذر (الأقل أفضل)</li>
+            <li>تاريخ المباشرة</li>
+          </ol>
+        </div>
+      </details>
+
+      <div class="footerNote">
+        <p class="disclaimer">
+          <strong>تنبيه:</strong> هذه أداة حسابية غير رسمية لحساب نقاط المفاضلة بشكل تقديري بناءً على القواعد التنظيمية المعلنة وما يُدخله المستخدم من بيانات.
+          لا تمثل وزارة التعليم ولا تُعد قرارًا أو ضمانًا للترشيح، وقد تختلف النتائج عن الأنظمة الرسمية.
+        </p>
+        <p class="signature">سلمان الجنيدي</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
